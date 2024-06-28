@@ -1,45 +1,51 @@
 import BankAccount from './bank-account.js';
 
-function tampilSaldoDeposit(amount) {
-    console.log("Transaksi sedang diproses ...");
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (!isNaN(amount) && amount >= 0) {
-                resolve(bank.deposit(amount));
-            } else {
-                reject("Inputan tidak sesuai!");
-            }
-        }, 5000);
-    })
+class BankSystem extends BankAccount {
+    constructor(amount) {
+        super(amount);
+    }
+
+    tampilSaldoDeposit(amount) {
+        console.log("Transaksi sedang diproses ...");
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (!isNaN(amount) && amount >= 0) {
+                    resolve(system.deposit(amount));
+                } else {
+                    reject("Inputan tidak sesuai!");
+                }
+            }, 5000);
+        })
+    }
+
+    tampilSaldoWithdraw(amount) {
+        console.log("Transaksi sedang diproses ...");
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                if (!isNaN(amount) && amount <= system.saldo && amount >= 0) {
+                    resolve(system.withdraw(amount));
+                }
+                else if (amount > system.saldo) {
+                    reject("Saldo tidak mencukupi untuk melakukan transaksi");
+                } else {
+                    reject("Inputan tidak sesuai!");
+                }
+            }, 5000);
+        })
+    }
 }
 
-
-function tampilSaldoWithdraw(amount) {
-    console.log("Transaksi sedang diproses ...");
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            if (!isNaN(amount) && amount <= bank.saldo && amount >= 0) {
-                resolve(bank.withdraw(amount));
-            }
-            else if (amount > bank.saldo) {
-                reject("Saldo tidak mencukupi untuk melakukan transaksi");
-            } else {
-                reject("Inputan tidak sesuai!");
-            }
-        }, 5000);
-    })
-}
 
 function tampilSaldo() {
     let pilih = window.prompt("Silahkan pilih transaksi! \n 1. tambah saldo \n 2. kurangi saldo");
     if (pilih == 1) {
-        let amount = window.prompt("Silahkan masukkan nominal! \nSaldo Anda saat ini adalah " + bank.saldo);
-        tampilSaldoDeposit(amount)
+        let amount = window.prompt("Silahkan masukkan nominal! \nSaldo Anda saat ini adalah " + system.saldo);
+        system.tampilSaldoDeposit(amount)
             .then(resolve => console.log(resolve))
             .catch(reject => console.log(reject))
     } else if (pilih == 2) {
-        let amount = window.prompt("Silahkan masukkan nominal! \nSaldo Anda saat ini adalah " + bank.saldo);
-        tampilSaldoWithdraw(amount)
+        let amount = window.prompt("Silahkan masukkan nominal! \nSaldo Anda saat ini adalah " + system.saldo);
+        system.tampilSaldoWithdraw(amount)
             .then(resolve => console.log(resolve))
             .catch(reject => console.log(reject))
     } else {
@@ -47,7 +53,6 @@ function tampilSaldo() {
     }
 }
 
-
 var amount = 0;
-let bank = new BankAccount(amount);
+let system = new BankSystem(amount);
 tampilSaldo()
